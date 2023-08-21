@@ -1,6 +1,6 @@
 -- This information tells other players more about the mod
 name = "unfriendly scarecrow"
-description = "mini boss"
+description = "Adds a scarecrow mini boss"
 author = "Bambusbjörn and Sanoggel"
 version = "0.0.1"
 
@@ -18,3 +18,4 @@ shipwrecked_compatible = false
 
 -- Character mods are required by all clients
 all_clients_require_mod = true 
+
