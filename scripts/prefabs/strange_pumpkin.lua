@@ -1,13 +1,13 @@
-
-
--- assets for the Item 
+-- assets for the Item
 local assets =
 {
-    Asset("ANIM", "anim/scarecrow.zip"),
-    Asset("ANIM", "anim/swap_scarecrow_face.zip"),
-    Asset("ANIM", "anim/shadow_skinchangefx.zip"),
+    Asset("ANIM", "anim/strange_pumpkin.zip"),
 }
- 
+
+local prefabs =
+{
+    "pumpkin",
+}
 
 local function onopen(inst)
     if not inst:HasTag("burnt") then
@@ -48,7 +48,7 @@ local function onhammered(inst, worker)
 end
 
 local function onhit(inst)
-    if not (IsDressingUp(inst) or inst:HasTag("burnt")) then
+    if not inst:HasTag("burnt") then
         inst.AnimState:PlayAnimation("hit")
         inst.AnimState:PushAnimation("idle", false)
         ChangeFace(inst, "hit")
@@ -58,7 +58,7 @@ end
 local function onbuilt(inst)
     inst.AnimState:PlayAnimation("place")
     inst.AnimState:PushAnimation("idle", false)
-   -- inst.SoundEmitter:PlaySound("dontstarve/common/scarecrow_craft")
+    -- inst.SoundEmitter:PlaySound("dontstarve/common/scarecrow_craft")
 end
 
 local function onsave(inst, data)
@@ -85,9 +85,9 @@ end
 
 local function onloadpostpass(inst, newents, data)
     if data and data.additems and inst.components.container then
-        for i, itemname in ipairs(data.additems)do
+        for i, itemname in ipairs(data.additems) do
             local ent = SpawnPrefab(itemname)
-            inst.components.container:GiveItem( ent )
+            inst.components.container:GiveItem(ent)
         end
     end
 end
@@ -99,6 +99,7 @@ local function fn()
     inst.entity:AddAnimState()
     inst.entity:AddSoundEmitter()
     inst.entity:AddMiniMapEntity()
+    inst.entity:AddNetwork()
 
     MakeObstaclePhysics(inst, .5)
 
@@ -116,19 +117,17 @@ local function fn()
     inst.components.container.skipclosesnd = true
     inst.components.container.skipopensnd = true
 
-    -- dont needed
-    --[[ inst:AddComponent("inspectable")
-    inst.components.inspectable.getstatus = getstatus ]]
-
+    inst.AnimState:PlayAnimation("idle_day")
+    inst:AddComponent("inspectable")
     inst:AddComponent("workable")
     inst.components.workable:SetWorkAction(ACTIONS.HAMMER)
     inst.components.workable:SetWorkLeft(10)
     inst.components.workable:SetOnFinishCallback(onhammered)
     inst.components.workable:SetOnWorkCallback(onhit)
 
-     -- dont needed
-  --[[   inst:AddComponent("hauntable")
-    inst.components.hauntable:SetHauntValue(TUNING.HAUNT_TINY) ]]
+    -- dont needed
+    inst:AddComponent("hauntable")
+    inst.components.hauntable:SetHauntValue(TUNING.HAUNT_TINY)
 
     MakeSnowCovered(inst)
     inst:ListenForEvent("onbuilt", onbuilt)
@@ -143,4 +142,5 @@ local function fn()
     return inst
 end
 
-return Prefab("strange_pumpkin", fn, assets)
+return Prefab("strange_pumpkin", fn, assets, prefabs),
+    MakePlacer("statuemarblebroodling_placer", "statuemarblebroodling", "statuemarblebroodling", "idle")

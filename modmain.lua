@@ -1,6 +1,6 @@
 PrefabFiles =
 {
-	"statuemarblebroodling",
+	"strange_pumpkin",
 }
 
 Assets =
@@ -16,9 +16,9 @@ Ingredient = GLOBAL.Ingredient
 TECH = GLOBAL.TECH
 
 -----------------RECIPES---------------
-AddRecipe("statuemarblebroodling",
+AddRecipe("strange_pumpkin",
 	{
-		Ingredient("marble", 4),
+		Ingredient("log", 4),
 	},
 	RECIPETABS.TOWN, TECH.SCULPTING_ONE, "statuemarblebroodling_placer", 0.5, nil, nil, nil,
 	"images/statuemarblebroodling.xml", "statuemarblebroodling.tex")

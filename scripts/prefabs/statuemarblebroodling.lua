@@ -58,23 +58,30 @@ local function onclose(inst)
     end
 end
 
+-- onfullMoon ? brauchen wir das?
 local function OnFullMoon(inst, isfullmoon)
-        if isfullmoon then
-            if not inst.angry then
-                inst.angry = true
-                inst.AnimState:PlayAnimation("idle_moon")
-                inst.AnimState:PushAnimation("idle_moon", false)
-            end
-        elseif inst.angry then
-            inst.angry = nil
-            inst.AnimState:PlayAnimation("idle")
-            inst.AnimState:PushAnimation("idle", false)
+    if isfullmoon then
+        if not inst.angry then
+            inst.angry = true
+            inst.AnimState:PlayAnimation("idle_moon")
+            inst.AnimState:PushAnimation("idle_moon", false)
         end
+    elseif inst.angry then
+        inst.angry = nil
+        inst.AnimState:PlayAnimation("idle")
+        inst.AnimState:PushAnimation("idle", false)
     end
+end
 
 --[[ command for needed items ingame
     c_give("goldnugget", 10);c_give("twigs", 10);c_give("cutstone", 10);c_give("log", 10);c_give("marble", 10);c_give("rocks", 10);c_give("boards", 10)
 ]]
+
+--[[ kann man frei alles herstellen
+    c_freecrafting()
+]]
+
+
 local function fn()
     local inst = CreateEntity()
 
