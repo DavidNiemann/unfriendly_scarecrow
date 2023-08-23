@@ -41,22 +41,30 @@ end
 
 local function onopen(inst)
     if not inst:HasTag("burnt") then
-        inst.AnimState:PlayAnimation("cooking_pre_loop")
-        inst.SoundEmitter:KillSound("snd")
-        inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot_open")
-        inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot", "snd")
+        --[[ inst.AnimState:PlayAnimation("open") ]]
+
+        --[[ if inst.skin_open_sound then
+            inst.SoundEmitter:PlaySound(inst.skin_open_sound)
+        else
+            inst.SoundEmitter:PlaySound("dontstarve/wilson/chest_open")
+        end ]]
     end
 end
 
 local function onclose(inst)
     if not inst:HasTag("burnt") then
-        if not inst.components.stewer:IsCooking() then
-            inst.AnimState:PlayAnimation("idle_empty")
-            inst.SoundEmitter:KillSound("snd")
-        end
-        inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot_close")
+       --[[  inst.AnimState:PlayAnimation("close")
+        inst.AnimState:PushAnimation("closed", false) ]]
+
+       --[[  if inst.skin_close_sound then
+            inst.SoundEmitter:PlaySound(inst.skin_close_sound)
+        else
+            inst.SoundEmitter:PlaySound("dontstarve/wilson/chest_close")
+        end ]]
     end
 end
+
+
 
 -- onfullMoon ? brauchen wir das?
 local function OnFullMoon(inst, isfullmoon)
@@ -103,10 +111,10 @@ local function fn()
 
     inst.entity:SetPristine()
 
-    if not TheWorld.ismastersim then
+    --[[ if not TheWorld.ismastersim then
         inst.OnEntityReplicated = function(inst) inst.replica.container:WidgetSetup("cookpot") end
         return inst
-    end
+    end ]]
 
     inst:AddComponent("lootdropper")
     inst.components.lootdropper:SetChanceLootTable('statuemarblebroodling')
@@ -121,12 +129,12 @@ local function fn()
     inst.components.workable:SetOnLoadFn(OnWorkLoad)
     inst.components.workable.savestate = true
 
-    inst:WatchWorldState("isfullmoon", OnFullMoon)
+    --[[ inst:WatchWorldState("isfullmoon", OnFullMoon) ]]
 
     MakeHauntableWork(inst)
 
     inst:AddComponent("container")
-    inst.components.container:WidgetSetup("cookpot")
+    inst.components.container:WidgetSetup("treasurechest")
     inst.components.container.onopenfn = onopen
     inst.components.container.onclosefn = onclose
 

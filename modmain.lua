@@ -1,6 +1,7 @@
 PrefabFiles =
 {
-	"strange_pumpkin",
+	--[[ "strange_pumpkin", ]]
+	"statuemarblebroodling"
 }
 
 Assets =
@@ -16,7 +17,7 @@ Ingredient = GLOBAL.Ingredient
 TECH = GLOBAL.TECH
 
 -----------------RECIPES---------------
-AddRecipe("strange_pumpkin",
+AddRecipe("statuemarblebroodling",
 	{
 		Ingredient("log", 4),
 	},
