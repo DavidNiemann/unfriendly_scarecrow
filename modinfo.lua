@@ -1,0 +1,11 @@
+name = "Sword"
+description = "Finally, a balanced sword in don't starve together!"
+author = "Silent"
+version = "1.0"
+forumthread = ""
+api_version = 10
+icon_atlas = "sword.xml"
+icon = "sword.tex"
+reign_of_giants_compatible = true
+dst_compatible = true
+all_clients_require_mod = true
