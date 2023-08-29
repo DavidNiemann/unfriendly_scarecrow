@@ -1,4 +1,6 @@
 local spawn_chance = 1
+local spawn_amount = 13
+
 local assets =
 {
     -- Animation files used for the item.
@@ -39,15 +41,16 @@ local function onattack(inst, owner, target)
             pt = owner:GetPosition()
             target = nil
         end
-        local offset = FindWalkableOffset(pt, math.random() * 2 * PI, 2, 3, false, true, NoHoles, false, true)
-        if offset ~= nil then
-           --[[  inst.SoundEmitter:PlaySound("dontstarve/common/shadowTentacleAttack_1")
+
+        --[[  inst.SoundEmitter:PlaySound("dontstarve/common/shadowTentacleAttack_1")
             inst.SoundEmitter:PlaySound("dontstarve/common/shadowTentacleAttack_2") ]]
-            for i = 1, 10, 1 do
-                local tentacle = SpawnPrefab("frog")
+        for i = 1, spawn_amount, 1 do
+            local offset = FindWalkableOffset(pt, math.random() * 2 * PI, 2, 3, false, true, NoHoles, false, true)
+            if offset ~= nil then
+                local tentacle = SpawnPrefab("crow")
                 if tentacle ~= nil then
                     tentacle.Transform:SetPosition(pt.x + offset.x, 0, pt.z + offset.z)
-                    tentacle.components.combat:SetTarget(owner)
+                    tentacle.components.combat:SetTarget(target)
                 end
             end
         end
