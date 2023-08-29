@@ -23,6 +23,34 @@ local function onunequip(inst, owner)
     owner.AnimState:Show("ARM_normal") 
 end
 
+local function fireattack(inst, attacker, target)
+    if not target:IsValid() then
+        --target killed or removed in combat damage phase
+        return
+    end
+--[[ 
+	if target.SoundEmitter ~= nil then
+	    target.SoundEmitter:PlaySound("dontstarve/wilson/blowdart_impact_fire")
+	end ]]
+
+    target:PushEvent("attacked", {attacker = attacker, damage = 0})
+    -- NOTES(JBK): Valid check in case the event removed the target.
+    if target:IsValid() then
+        if target.components.burnable then
+            target.components.burnable:Ignite(nil, attacker)
+        end
+        if target.components.freezable then
+            target.components.freezable:Unfreeze()
+        end
+        if target.components.health then
+            target.components.health:DoFireDamage(0, attacker)
+        end
+        if target.components.combat then
+            target.components.combat:SuggestTarget(attacker)
+        end
+    end
+end
+
 local function init()
 	local inst = CreateEntity()
 
@@ -47,7 +75,8 @@ local function init()
 
     inst:AddComponent("weapon")
     inst.components.weapon:SetDamage(39)
-
+    inst.components.weapon:SetOnAttack(fireattack)
+    
     inst:AddComponent("inspectable")
     
     inst:AddComponent("inventoryitem")
