@@ -1,6 +1,6 @@
 PrefabFiles = {
     "sword",
-    "extrabirds",
+    "raven",
 }
 
 Assets =

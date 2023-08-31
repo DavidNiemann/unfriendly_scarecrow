@@ -1,3 +1,13 @@
+require "behaviours/follow"
+
+
+local MIN_FOLLOW_DIST = 2
+local TARGET_FOLLOW_DIST = 5
+local MAX_FOLLOW_DIST = 9
+
+local MAX_CHASE_TIME = 10
+local MAX_CHASE_DIST = 30
+
 local RavenBrain = Class(Brain, function(self, inst)
     Brain._ctor(self, inst)
 end)
@@ -23,10 +33,12 @@ function RavenBrain:OnStart()
     {
         WhileNode( function() return self.inst.components.hauntable ~= nil and self.inst.components.hauntable.panic end, "PanicHaunted",
 			ActionNode(function() return FlyAway(self.inst) end)),
-        IfNode(function() return ShouldFlyAway(self.inst) end, "Threat Near",
-            ActionNode(function() return FlyAway(self.inst) end)),
-        EventNode(self.inst, "threatnear",
-            ActionNode(function() return FlyAway(self.inst) end)),
+       --[[  IfNode(function() return ShouldFlyAway(self.inst) end, "Threat Near",
+            ActionNode(function() return FlyAway(self.inst) end)), ]]
+       --[[  EventNode(self.inst, "threatnear", ]]
+       --[[      ActionNode(function() return FlyAway(self.inst) end)), ]]
+       WhileNode( function() return self.inst.components.combat.target == nil or not self.inst.components.combat:InCooldown() end, "AttackMomentarily",
+           ChaseAndAttack(self.inst, MAX_CHASE_TIME, MAX_CHASE_DIST) ),
         EventNode(self.inst, "gohome",
             ActionNode(function() return FlyAway(self.inst) end)),
     }, .25)

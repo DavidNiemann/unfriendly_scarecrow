@@ -28,54 +28,6 @@ local function OnAttacked(inst, data)
     end
 end
 
-
-local function CreateGroundGlow(inst, rotrate)
-    local groundglow = SpawnPrefab("hutch_music_light_fx")
-    local scale = (math.random() * .2 + 1.2) * (math.random() < .5 and 1 or -1)
-    groundglow.Transform:SetScale(scale, scale, scale)
-    groundglow.Follower:FollowSymbol(inst.GUID, "base_point", 0, 0, 0)
-    groundglow:InitFX(
-        inst,
-        {
-            rot = math.random(0, 359),
-            rotrate = rotrate,
-            alpha = math.random(),
-            alphadir = math.random() < .5,
-            alpharate = math.random() * .02 + .005,
-        }
-    )
-    return groundglow
-end
---some fucking shit syntax error right here
---[[
-local function EmberedPhoenix(inst, data)
-	if inst.name == "phoenix" then
-		inst:DoTaskInTime(5, function(inst))
-			inst.entity:AddLight()  
-			inst.Light:Enable(true)
-			inst.Light:SetIntensity(.7)
-			inst.Light:SetRadius(2.5)
-			inst.Light:SetFalloff(.9)
-			inst.Light:SetColour(255 / 255, 200 / 255, 0 / 255)
-		
-		end
-	    inst._groundglows =
-        {
-            CreateGroundGlow(inst, .5),
-            CreateGroundGlow(inst, -.5),
-            CreateGroundGlow(inst, 1),
-        }
-	end
-end
-]]--
-local function OnPhoenixDeath(inst, data)
-	if inst.name == "phoenix" then
-		local nix=SpawnPrefab("phoenix")
-			nix.Transform:SetPosition(spawn_pt.x,spawn_pt.y,spawn_pt.z)
-			--nix.Transform:SetPosition(spawn_pt.x,spawn_pt.y,spawn_pt.z)
-	end
-end
-
 local function OnTrapped(inst, data)
 
     if data and data.trapper and data.trapper.settrapsymbols then
@@ -87,9 +39,6 @@ local function OnDropped(inst)
     inst.sg:GoToState("stunned")
 end
 
-local function SeedSpawnTest()
-    return not TheWorld.state.iswinter
-end
 
 local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
     local assets=
@@ -143,10 +92,6 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         inst:AddTag(name)
         inst:AddTag("smallcreature")
 		
-		
-		--if inst.HasTag("phoenix") then
-
-
 		scale = scale or 1 
 
         inst.Transform:SetTwoFaced()   
@@ -218,7 +163,6 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         
 		--inst:AddTag("HASHEATER")
 		
-		--fix this for phoenix---
         MakeSmallBurnableCharacter(inst, "crow_body")
         MakeTinyFreezableCharacter(inst, "crow_body")
 
@@ -228,7 +172,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
 		inst.components.periodicspawner:SetPrefab(psprefab or "seeds")--set to psprefab or "seeds"(it will be set to "seeds" if psprefab is nil)
         inst.components.periodicspawner:SetDensityInRange(60, 2)
         inst.components.periodicspawner:SetMinimumSpacing(30)
-		inst.components.periodicspawner:SetSpawnTestFn( SeedSpawnTest )
+	--[[ 	inst.components.periodicspawner:SetSpawnTestFn( SeedSpawnTest ) ]]
 
         inst:ListenForEvent("ontrapped", OnTrapped)
 
@@ -256,9 +200,9 @@ end
 
 return 	makebird(
 				"phoenix",
-				"robin",
-				{ {"bluegem", 1.1}, {"feather_crow", 1}},
+				"crow",
+				{ {"bluegem", 0.8}, {"feather_crow", 1.1}},
 				"bluegem",
 				FOODTYPE.ROUGHAGE,
-				1.2
+				1.6
 				)
