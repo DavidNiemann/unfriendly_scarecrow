@@ -47,7 +47,7 @@ local function onattack(inst, owner, target)
         for i = 1, spawn_amount, 1 do
             local offset = FindWalkableOffset(pt, math.random() * 2 * PI, 2, 3, false, true, NoHoles, false, true)
             if offset ~= nil then
-                local tentacle = SpawnPrefab("crow")
+                local tentacle = SpawnPrefab("phoenix")
                 if tentacle ~= nil then
                     tentacle.Transform:SetPosition(pt.x + offset.x, 0, pt.z + offset.z)
                     tentacle.components.combat:SetTarget(target)
