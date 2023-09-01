@@ -8,7 +8,7 @@ local function ShouldSleep(inst)
     return DefaultSleepTest(inst) and not inst.sg:HasStateTag("flying")
 end
 
-local function OnAttacked(inst, data)
+--[[ local function OnAttacked(inst, data)
     local x,y,z = inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x,y,z, 30, {'bird'})
     
@@ -26,6 +26,11 @@ local function OnAttacked(inst, data)
         end
         
     end
+end ]]
+
+local function OnAttacked(inst, data)
+    inst.components.combat:SetTarget(data.attacker)
+   --[[  inst.components.combat:ShareTarget(data.attacker, 30, function(dude) return dude:HasTag("frog") and not dude.components.health:IsDead() end, 5) ]]
 end
 
 local function OnTrapped(inst, data)
@@ -153,6 +158,12 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         inst:AddComponent("combat")
         inst.components.combat.hiteffectsymbol = "crow_body"
         --inst.components.combat.canbeattackedfn = canbeattacked
+        inst.components.combat:SetDefaultDamage(5)
+        inst.components.combat:SetAttackPeriod(5)
+        --[[ inst.components.combat:SetRetargetFunction(3, retargetfn) ]]
+    
+        inst.components.combat.onhitotherfn = OnHitOther
+
         inst:AddComponent("health")
 		inst.components.health:SetMaxHealth(TUNING.BIRD_HEALTH)
 		inst.components.health.murdersound = "dontstarve/wilson/hit_animal"
