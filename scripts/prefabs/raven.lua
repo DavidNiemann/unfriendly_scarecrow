@@ -4,7 +4,7 @@ local brain = require "brains/RavenBrain"
 local function OnAttacked(inst, data)
     inst.components.combat:SetTarget(data.attacker)
     inst.components.combat:ShareTarget(data.attacker, 30,
-        function(dude) return dude:HasTag("frog") and not dude.components.health:IsDead() end, 5)
+        function(dude) return dude:HasTag("raven") and not dude.components.health:IsDead() end, 5)
 end
 
 local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
@@ -22,7 +22,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
 
     prefabs[2] = psprefab or "seeds" -- add the periodspawnprefab to "prefabs" list
 
-    if loottable ~= nil then      -- -- add all loot to "prefabs" list
+    if loottable ~= nil then         -- -- add all loot to "prefabs" list
         for key, loot in pairs(loottable) do
             key = tonumber(key)
             prefabs[key + 2] = loot[1] --key+2 is due to the fact that "prefabs" list already has 2 values in it
@@ -51,23 +51,23 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         inst:AddTag("smallcreature")
         inst:AddTag("animal")
         inst:AddTag("prey")
-        inst:AddTag("frog")
+        inst:AddTag("raven")
 
         --Set default for scale
         scale = scale or 1
 
         inst.Transform:SetTwoFaced()
---[[         inst.AnimState:SetBank("crow")
+        inst.AnimState:SetBank("crow")
         inst.AnimState:SetBuild(name .. "_build")
-        inst.AnimState:PlayAnimation("idle") ]]
-        inst.AnimState:SetBank("frog")
-        inst.AnimState:SetBuild("frog")
         inst.AnimState:PlayAnimation("idle")
+        --[[ inst.AnimState:SetBank("frog")
+        inst.AnimState:SetBuild("frog")
+        inst.AnimState:PlayAnimation("idle") ]]
         inst.DynamicShadow:SetSize(scale, scale - 0.25)
         inst.DynamicShadow:Enable(false)
 
         inst.Transform:SetScale(scale, scale, scale)
---[[         MakeFeedablePetPristine(inst) ]]
+        --[[         MakeFeedablePetPristine(inst) ]]
 
         if not TheWorld.ismastersim then
             return inst
@@ -83,10 +83,10 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         }
         inst.trappedbuild = name .. "_build"
 
-        inst:AddComponent("locomotor") -- locomotor must be constructed before the stategraph
+        inst:AddComponent("locomotor")    -- locomotor must be constructed before the stategraph
         inst.components.locomotor:EnableGroundSpeedMultiplier(false)
         inst.components.locomotor:SetTriggersCreep(false)
-        inst:SetStateGraph("SGfrog")
+        inst:SetStateGraph("SGraven")
 
         if loottable ~= nil then
             inst:AddComponent("lootdropper")
@@ -97,11 +97,11 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         end
 
         inst:AddComponent("combat")
-        inst.components.combat:SetDefaultDamage(TUNING.FROG_DAMAGE)
-        inst.components.combat:SetAttackPeriod(TUNING.FROG_ATTACK_PERIOD)
+        inst.components.combat:SetDefaultDamage(50)
+        inst.components.combat:SetAttackPeriod(1)
 
         inst:AddComponent("health")
-        inst.components.health:SetMaxHealth(1000)
+        inst.components.health:SetMaxHealth(200)
         inst.components.health.murdersound = "dontstarve/wilson/hit_animal"
         inst:SetBrain(brain)
 
