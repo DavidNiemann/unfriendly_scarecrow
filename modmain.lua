@@ -5,8 +5,8 @@ PrefabFiles = {
 
 Assets =
 {
-    Asset("ATLAS", "images/inventoryimages/phoenix.xml"),
-    Asset("ANIM", "anim/phoenix_build.zip"),
+    Asset("ATLAS", "images/inventoryimages/raven.xml"),
+    Asset("ANIM", "anim/raven_build.zip"),
 }
 GLOBAL.STRINGS.NAMES.SWORD = "Sword"
 GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SWORD = "A very sharp and strong sword!"
@@ -14,8 +14,8 @@ GLOBAL.STRINGS.RECIPE_DESC.SWORD = "A very sharp and strong sword!"
 GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SWORD = "A very sharp and strong sword!"
 
 
-GLOBAL.STRINGS.NAMES.PHOENIX = "Phoenix"
-GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.PHOENIX = "Please don't set anything on fire."
+GLOBAL.STRINGS.NAMES.RAVEN = "Raven"
+GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.RAVEN = "Please don't set anything on fire."
 
 STRINGS = GLOBAL.STRINGS
 RECIPETABS = GLOBAL.RECIPETABS

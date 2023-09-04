@@ -118,7 +118,7 @@ end
 --TEMPLATE
 --makebird("prefabname", "soundname", {loottables}, "periodcspawnprefab", FOODTYPE.TYPE, scale, animremap)
 return makebird(
-    "phoenix",
+    "raven",
     "crow",
     { { "bluegem", 0.8 }, { "feather_crow", 1.1 } },
     "bluegem",
