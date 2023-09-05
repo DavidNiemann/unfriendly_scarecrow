@@ -267,7 +267,7 @@ local states =
         onenter = function(inst, cb)
             inst.Physics:Stop()
             inst.components.combat:StartAttack()
-            inst.AnimState:PlayAnimation("peck", true)
+            inst.AnimState:PlayAnimation("fly", true)
             inst.sg:SetTimeout(inst.AnimState:GetCurrentAnimationLength())
         end,
 
