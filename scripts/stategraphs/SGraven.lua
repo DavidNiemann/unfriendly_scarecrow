@@ -41,8 +41,12 @@ local events =
             end
         end),
     EventHandler("doattack",
-        function(inst) if not inst.components.health:IsDead() and not inst.sg:HasStateTag("busy") then inst.sg:GoToState(
-                "attack") end end),
+        function(inst)
+            if not inst.components.health:IsDead() and not inst.sg:HasStateTag("busy") then
+                inst.sg:GoToState(
+                    "attack")
+            end
+        end),
     EventHandler("death", function(inst)
         inst.sg:GoToState("death")
     end),
@@ -262,25 +266,30 @@ local states =
 
     State {
         name = "attack",
-        tags = {"attack"},
+        tags = { "attack", "busy" },
 
-        onenter = function(inst, cb)
-            inst.Physics:Stop()
+        onenter = function(inst)
+            inst.SoundEmitter:PlaySound("dontstarve/pig/attack")
+            inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_whoosh")
             inst.components.combat:StartAttack()
-            inst.AnimState:PlayAnimation("fly", true)
-            inst.sg:SetTimeout(inst.AnimState:GetCurrentAnimationLength())
+            inst.Physics:Stop()
+            inst.AnimState:PlayAnimation("fly")
         end,
 
         timeline =
         {
-            TimeEvent(20 * FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/frog/attack_spit") end),
-            TimeEvent(20 * FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/frog/attack_voice") end),
-            TimeEvent(25 * FRAMES, function(inst) inst.components.combat:DoAttack() end),
+            TimeEvent(13 * FRAMES, function(inst)
+                inst.components.combat:DoAttack()
+                inst.sg:RemoveStateTag("attack")
+                inst.sg:RemoveStateTag("busy")
+            end),
         },
 
         events =
         {
-            EventHandler("animqueueover", function(inst) inst.sg:GoToState("idle") end),
+            EventHandler("animover", function(inst)
+                inst.sg:GoToState("idle")
+            end),
         },
     },
 
@@ -403,7 +412,7 @@ local states =
         {
             EventHandler("animover", function(inst)
                 inst.sg:GoToState(inst.components.burnable ~= nil and inst.components.burnable:IsBurning() and
-                "distress_pre" or "attack")
+                    "distress_pre" or "attack")
             end),
         },
     },
