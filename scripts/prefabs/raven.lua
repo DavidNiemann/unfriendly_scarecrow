@@ -98,7 +98,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
 
         inst:AddComponent("combat")
         inst.components.combat:SetDefaultDamage(50)
-        inst.components.combat:SetAttackPeriod(1)
+        inst.components.combat:SetAttackPeriod(0.3)
 
         inst:AddComponent("health")
         inst.components.health:SetMaxHealth(200)

@@ -36,7 +36,11 @@ local events =
                 end
             else
                 if not inst.sg:HasStateTag("hopping") then
-                    inst.sg:GoToState("hop")
+                    if inst.components.locomotor:WantsToRun() then
+                        inst.sg:GoToState("fly")
+                    else
+                        inst.sg:GoToState("hop")
+                    end
                 end
             end
         end),
@@ -268,20 +272,21 @@ local states =
         name = "attack",
         tags = { "attack", "busy" },
 
-        onenter = function(inst)
-            inst.SoundEmitter:PlaySound("dontstarve/pig/attack")
-            inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_whoosh")
-            inst.components.combat:StartAttack()
+        onenter = function(inst, cb)
             inst.Physics:Stop()
-            inst.AnimState:PlayAnimation("fly")
+            inst.components.combat:StartAttack()
+            inst.AnimState:PlayAnimation("peck", true)
+            inst.sg:SetTimeout(inst.AnimState:GetCurrentAnimationLength())
         end,
 
         timeline =
         {
+            TimeEvent(10 * FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/frog/attack_spit") end),
+            TimeEvent(10 * FRAMES, function(inst) inst.SoundEmitter:PlaySound("dontstarve/frog/attack_voice") end),
             TimeEvent(13 * FRAMES, function(inst)
                 inst.components.combat:DoAttack()
-                inst.sg:RemoveStateTag("attack")
-                inst.sg:RemoveStateTag("busy")
+                --[[ inst.sg:RemoveStateTag("attack")
+                inst.sg:RemoveStateTag("busy") ]]
             end),
         },
 
@@ -366,6 +371,38 @@ local states =
     },
 
     State {
+        name = "fly",
+        tags = { "moving", "canrotate", "hopping" },
+
+        onenter = function(inst)
+            inst.AnimState:PlayAnimation("fly")
+            inst.Physics:SetMotorVel(5, 0, 0)
+        end,
+
+        timeline =
+        {
+            TimeEvent(5 * FRAMES, function(inst)
+                inst.components.locomotor:RunForward()
+            end),
+            TimeEvent(8 * FRAMES, function(inst)
+                inst.Physics:Stop()
+                if inst.components.floater ~= nil then
+                    inst:PushEvent("on_landed")
+                elseif inst.components.inventoryitem ~= nil then
+                    inst.components.inventoryitem:TryToSink()
+                end
+            end),
+        },
+
+        events =
+        {
+            EventHandler("animover", function(inst)
+                inst.sg:GoToState("idle")
+            end),
+        },
+    },
+
+    State {
         name = "hop",
         tags = { "moving", "canrotate", "hopping" },
 
@@ -376,6 +413,9 @@ local states =
 
         timeline =
         {
+            TimeEvent(5 * FRAMES, function(inst)
+                inst.components.locomotor:WalkForward()
+            end),
             TimeEvent(8 * FRAMES, function(inst)
                 inst.Physics:Stop()
                 if inst.components.floater ~= nil then
