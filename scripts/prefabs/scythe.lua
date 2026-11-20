@@ -4,11 +4,11 @@ local spawn_amount = 13
 local assets =
 {
     -- Animation files used for the item.
-    Asset("ANIM", "anim/sword.zip"),
+    Asset("ANIM", "anim/scythe.zip"),
 
     -- Inventory image and atlas file used for the item.
-    Asset("ATLAS", "images/inventoryimages/sword.xml"),
-    Asset("IMAGE", "images/inventoryimages/sword.tex"),
+    Asset("ATLAS", "images/inventoryimages/scythe.xml"),
+    Asset("IMAGE", "images/inventoryimages/scythe.tex"),
 }
 local prefabs = {
     "raven",
@@ -17,8 +17,8 @@ local prefabs = {
 
 local function onequip(inst, owner)
     owner.AnimState:OverrideSymbol("swap_object", -- Symbol to override.
-        "sword",                                  -- Animation bank we will use to overwrite the symbol.
-        "sword")                                  -- Symbol to overwrite it with.
+        "scythe",                                 -- Animation bank we will use to overwrite the symbol.
+        "scythe")                                 -- Symbol to overwrite it with.
     owner.AnimState:Show("ARM_carry")
     owner.AnimState:Hide("ARM_normal")
 end
@@ -67,8 +67,8 @@ local function init()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("sword")
-    inst.AnimState:SetBuild("sword")
+    inst.AnimState:SetBank("scythe")
+    inst.AnimState:SetBuild("scythe")
     inst.AnimState:PlayAnimation("idle")
 
     inst:AddTag("sharp")
@@ -86,8 +86,8 @@ local function init()
     inst:AddComponent("inspectable")
 
     inst:AddComponent("inventoryitem")
-    inst.components.inventoryitem.atlasname = "images/inventoryimages/sword.xml"
-    inst.components.inventoryitem.imagename = "sword"
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/scythe.xml"
+    inst.components.inventoryitem.imagename = "scythe"
 
     inst:AddComponent("equippable")
     inst.components.equippable:SetOnEquip(onequip)
@@ -102,4 +102,4 @@ local function init()
 
     return inst
 end
-return Prefab("common/inventory/sword", init, assets, prefabs)
+return Prefab("common/inventory/scythe", init, assets, prefabs)

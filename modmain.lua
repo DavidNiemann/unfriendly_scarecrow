@@ -1,5 +1,5 @@
 PrefabFiles = {
-    "sword",
+    "scythe",
     "raven",
 }
 
@@ -8,9 +8,9 @@ Assets =
     Asset("ATLAS", "images/inventoryimages/raven.xml"),
     Asset("ANIM", "anim/raven_build.zip"),
 }
-GLOBAL.STRINGS.NAMES.SWORD = "Sword"
-GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SWORD = "A very sharp and strong sword!"
-GLOBAL.STRINGS.RECIPE_DESC.SWORD = "A very sharp and strong sword!"
+GLOBAL.STRINGS.NAMES.SCYTHE = "Raven Scythe"
+GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SCYTHE = "A sharp, crow looking scythe!"
+GLOBAL.STRINGS.RECIPE_DESC.SCYTHE = "A sharp, crow looking scythe!"
 
 
 GLOBAL.STRINGS.NAMES.RAVEN = "Raven"
@@ -22,6 +22,6 @@ Recipe = GLOBAL.Recipe
 Ingredient = GLOBAL.Ingredient
 TECH = GLOBAL.TECH
 
-local sword = GLOBAL.Recipe("sword", { Ingredient("twigs", 2), Ingredient("flint", 8), Ingredient("rocks", 2) },
+local scythe = GLOBAL.Recipe("scythe", { Ingredient("twigs", 2), Ingredient("flint", 8), Ingredient("rocks", 2) },
     RECIPETABS.WAR, { SCIENCE = 2 })
-sword.atlas = "images/inventoryimages/sword.xml"
+scythe.atlas = "images/inventoryimages/scythe.xml"

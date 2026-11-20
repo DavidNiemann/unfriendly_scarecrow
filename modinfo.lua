@@ -1,5 +1,5 @@
-name = "Sword"
-description = "Finally, a balanced sword in don't starve together!"
+name = "Raven Scythe"
+description = "Finally, a balanced scythe in don't starve together!"
 author = "Sanoggel & Bambusbjörn"
 version = "0.1"
 forumthread = ""
