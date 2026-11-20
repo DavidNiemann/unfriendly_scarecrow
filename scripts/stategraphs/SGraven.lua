@@ -275,8 +275,12 @@ local states =
         onenter = function(inst, cb)
             inst.Physics:Stop()
             inst.components.combat:StartAttack()
-            inst.AnimState:PlayAnimation("peck", true)
+            inst.AnimState:PlayAnimation("peck")
             inst.sg:SetTimeout(inst.AnimState:GetCurrentAnimationLength())
+        end,
+
+        ontimeout = function(inst)
+            inst.sg:GoToState("idle")
         end,
 
         timeline =
@@ -451,8 +455,13 @@ local states =
         events =
         {
             EventHandler("animover", function(inst)
-                inst.sg:GoToState(inst.components.burnable ~= nil and inst.components.burnable:IsBurning() and
-                    "distress_pre" or "attack")
+                if inst.components.burnable ~= nil and inst.components.burnable:IsBurning() then
+                    inst.sg:GoToState("distress_pre")
+                elseif inst.components.combat:HasTarget() then
+                    inst.sg:GoToState("attack")
+                else
+                    inst.sg:GoToState("idle")
+                end
             end),
         },
     },

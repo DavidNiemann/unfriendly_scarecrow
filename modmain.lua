@@ -11,7 +11,6 @@ Assets =
 GLOBAL.STRINGS.NAMES.SWORD = "Sword"
 GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SWORD = "A very sharp and strong sword!"
 GLOBAL.STRINGS.RECIPE_DESC.SWORD = "A very sharp and strong sword!"
-GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SWORD = "A very sharp and strong sword!"
 
 
 GLOBAL.STRINGS.NAMES.RAVEN = "Raven"

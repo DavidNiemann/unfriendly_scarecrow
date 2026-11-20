@@ -10,8 +10,8 @@ local assets =
     Asset("ATLAS", "images/inventoryimages/sword.xml"),
     Asset("IMAGE", "images/inventoryimages/sword.tex"),
 }
-prefabs = {
-    "sword",
+local prefabs = {
+    "raven",
 }
 
 
@@ -50,6 +50,7 @@ local function onattack(inst, owner, target)
             local tentacle = SpawnPrefab("raven")
             if tentacle ~= nil then
                 tentacle.Transform:SetPosition(pt.x + offset.x, 0, pt.z + offset.z)
+                tentacle.owner = owner -- used to find new targets near the player
                 tentacle.components.combat:SetTarget(target)
             end
         end
@@ -72,11 +73,11 @@ local function init()
 
     inst:AddTag("sharp")
 
+    inst.entity:SetPristine()
+
     if not TheWorld.ismastersim then
         return inst
     end
-
-    inst.entity:SetPristine()
 
     inst:AddComponent("weapon")
     inst.components.weapon:SetDamage(39)

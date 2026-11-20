@@ -1,4 +1,4 @@
-local brain = require "brains/RavenBrain"
+local brain = require "brains/ravenbrain"
 
 -- if bird is attacked
 local function OnAttacked(inst, data)
@@ -11,7 +11,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
     local assets =
     {
         Asset("ANIM", "anim/crow.zip"),
-        Asset("ANIM", "anim/" .. name .. "_build.zip"),
+        Asset("ANIM", "anim/crow_build.zip"),
         Asset("SOUND", "sound/birds.fsb")
     }
 
@@ -58,7 +58,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
 
         inst.Transform:SetTwoFaced()
         inst.AnimState:SetBank("crow")
-        inst.AnimState:SetBuild(name .. "_build")
+        inst.AnimState:SetBuild("crow_build")
         inst.AnimState:PlayAnimation("idle")
         --[[ inst.AnimState:SetBank("frog")
         inst.AnimState:SetBuild("frog")
@@ -69,11 +69,11 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         inst.Transform:SetScale(scale, scale, scale)
         --[[         MakeFeedablePetPristine(inst) ]]
 
+        inst.entity:SetPristine()
+
         if not TheWorld.ismastersim then
             return inst
         end
-
-        inst.entity:SetPristine()
 
         inst.sounds =
         {
@@ -81,7 +81,7 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
             chirp = "dontstarve/birds/chirp_" .. soundname,
             flyin = "dontstarve/birds/flyin",
         }
-        inst.trappedbuild = name .. "_build"
+        inst.trappedbuild = "crow_build"
 
         inst:AddComponent("locomotor")    -- locomotor must be constructed before the stategraph
         inst.components.locomotor:EnableGroundSpeedMultiplier(false)
@@ -104,6 +104,8 @@ local function makebird(name, soundname, loottable, psprefab, foodtype, scale)
         inst.components.health:SetMaxHealth(200)
         inst.components.health.murdersound = "dontstarve/wilson/hit_animal"
         inst:SetBrain(brain)
+
+        inst:AddComponent("inspectable")
 
         MakeSmallBurnableCharacter(inst, "crow_body")
         MakeTinyFreezableCharacter(inst, "crow_body")
